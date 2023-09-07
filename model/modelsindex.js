@@ -1,7 +1,7 @@
 const {Sequelize} = require('sequelize');
 
 
-const sequelize = new Sequelize('prowan','prowan','prowan123',{
+const sequelize = new Sequelize('prowan','root','',{
     host: 'localhost',
     dialect: 'mysql'
 });
@@ -14,10 +14,11 @@ sequelize.authenticate().then(()=>{
 });
 
 
-    
 
 const db = {}
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
+
+db.users = require("./users")(sequelize,Sequelize);
 
 module.exports = db;

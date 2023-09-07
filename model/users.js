@@ -6,6 +6,7 @@ module.exports = (sequelize,Sequelize)=>{
             type: Sequelize.UUID,
             allowNull: false,
             unique: true,
+            defaultValue: Sequelize.UUIDV4,
             primaryKey: true
         },
         firstName:{
@@ -76,5 +77,5 @@ module.exports = (sequelize,Sequelize)=>{
         
     })
 
-    return Users;
+    return User;
 }
