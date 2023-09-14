@@ -2,13 +2,13 @@
 
 module.exports = (sequelize,Sequelize)=>{
     const User = sequelize.define("user",{
-        proid:{
-            type: Sequelize.UUID,
-            allowNull: false,
-            unique: true,
-            defaultValue: Sequelize.UUIDV4,
-            primaryKey: true
-        },
+        // proid:{
+        //     type: Sequelize.UUID,
+        //     allowNull: false,
+        //     unique: true,
+        //     defaultValue: Sequelize.UUIDV4,
+        //     primaryKey: true
+        // },
         firstName:{
             type: Sequelize.STRING,
             allowNull: false
@@ -25,6 +25,11 @@ module.exports = (sequelize,Sequelize)=>{
             allowNull: false,
             unique: true,
         },
+        password:{
+            type: Sequelize.STRING,
+            // allowNull: false,
+            // unique: true,
+        },
         title:{
             type: Sequelize.STRING
         },
@@ -37,6 +42,10 @@ module.exports = (sequelize,Sequelize)=>{
             allowNull: false
         },
         membershipNumber:{
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        role:{
             type: Sequelize.STRING,
             allowNull: false
         },
