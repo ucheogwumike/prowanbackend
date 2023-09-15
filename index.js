@@ -7,6 +7,14 @@
  const fs = require('fs')
  const auth = require('./middleware/auth')
  const dotenv = require('dotenv');
+ const cors = require('cors')
+ 
+ 
+ 
+
+
+
+
  dotenv.config();
 
 
@@ -39,6 +47,7 @@
  const port = 4000;
 
 
+ app.use(cors());
  app.use(express.static(path.join(__dirname, '/uploads')));
  app.use(express.json());
  app.use(express.urlencoded({extended:true}));
