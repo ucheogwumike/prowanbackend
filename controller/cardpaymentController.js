@@ -6,6 +6,7 @@ const interswitch = require('../thirdpartyapi/xtrapay');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
+const crypto = require('crypto');
 
 
 dotenv.config();
@@ -72,3 +73,5 @@ res.json(card.data)
     }
 
  })
+
+ module.exports = router;

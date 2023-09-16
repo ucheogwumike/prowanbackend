@@ -56,7 +56,7 @@
 
 
  app.use('/api/auth', AuthController);
- app.use('/api/payment',auth, cardController);
+ app.use('/payment',cardController);
 
  app.get('/',async (req,res)=>{
     // await db.users.create(req.body);
