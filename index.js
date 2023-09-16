@@ -4,6 +4,7 @@
  const path = require('path')
  //const upload = multer({ dest: './uploads'});
  const AuthController = require('./controller/authController');
+ const cardController = require('./controller/cardpaymentController');
  const fs = require('fs')
  const auth = require('./middleware/auth')
  const dotenv = require('dotenv');
@@ -55,6 +56,7 @@
 
 
  app.use('/api/auth', AuthController);
+ app.use('/api/payment',auth, cardController);
 
  app.get('/',async (req,res)=>{
     // await db.users.create(req.body);
