@@ -46,12 +46,13 @@ try {
 })
 
 const token = jwt.sign(
-    {email: email},process.env.SECRETE,{expiresIn:86400}
+    {email:req.body.email},process.env.SECRETE,{expiresIn:86400}
     
 )
 res.status(200).send({auth: true,token: token})
   
 } catch (error) {
+	console.log(error);
   res.status(419).send({error:'bad request'})
   
 }
@@ -61,7 +62,7 @@ res.status(200).send({auth: true,token: token})
 
  router.post('/login', async function(req, res) {
 
-    const user = await db.users.findOne({ where: { title: 'My Title' } })
+    const user = await db.users.findOne({ where: { email: req.body.email } })
 
     
       if (!user) return res.status(404).send('No user found.');
@@ -69,7 +70,7 @@ res.status(200).send({auth: true,token: token})
       const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
       if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
       
-      const token = jwt.sign({email: email}, process.env.SECRETE, {
+      const token = jwt.sign({email:req.body.email}, process.env.SECRETE, {
         expiresIn: 86400 // expires in 24 hours
       })
       

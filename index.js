@@ -72,7 +72,7 @@
             },
           });
 
-          await db.users.save();
+//          await db.users.save();
 
           res.status(200).send({message:"profile picture changed"})
         

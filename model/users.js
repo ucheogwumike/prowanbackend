@@ -27,7 +27,7 @@ module.exports = (sequelize,Sequelize)=>{
         },
         password:{
             type: Sequelize.STRING,
-            // allowNull: false,
+            allowNull: false,
             // unique: true,
         },
         title:{
@@ -47,7 +47,7 @@ module.exports = (sequelize,Sequelize)=>{
         },
         role:{
             type: Sequelize.STRING,
-            allowNull: false
+            //allowNull: false
         },
         dateOfBirth:{
             type: Sequelize.DATEONLY,
