@@ -63,6 +63,21 @@
     res.send('hello')
  })
 
+ app.post('/usertransactions',auth,async(req,res)=>{
+try {
+  const user = await db.users.findOne({where:{email:req.body.email}})
+ const transaction = await db.transactions.create({reference:req.body.reference,
+                                  title:req.body.title,
+                                amount:req.body.amount,
+                                userId:user.id});
+
+  res.status(200).send({message:"transaction updated",transaction:transaction})
+} catch (error) {
+  
+}
+
+ })
+
  app.post('/profile',auth,upload.single('picture'),async (req,res,next)=>{
     //await db.users.create(req.body);
     //req.file.filename = `john.png`

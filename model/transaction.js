@@ -1,11 +1,6 @@
 module.exports = (sequelize,Sequelize)=>{
-    const transaction = sequelize.define("user",{
-        trxid:{
-            type: Sequelize.UUID,
-            allowNull: false,
-            unique: true,
-            primaryKey: true
-        },
+    const transaction = sequelize.define("transaction",{
+        reference:{type:Sequelize.STRING},
         amount:{
             type: Sequelize.DECIMAL,
             allowNull: false
