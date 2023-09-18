@@ -90,7 +90,7 @@ try {
           });
 
 //          await db.users.save();
-          console.log(req.file.filename)
+//          console.log(req.file.filename)
 
           res.status(200).send({message:"profile picture changed"})
         
