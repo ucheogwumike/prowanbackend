@@ -63,6 +63,16 @@
     res.send('hello')
  })
 
+ app.get('/users/:email',auth,async (req,res)=>{
+  try {
+    console.log(req.params)
+    const user = await db.users.findOne({ where: { email: req.params.email } })
+    res.send(user);
+  } catch (error) {
+    console.log(error)
+  }
+  
+})
  app.post('/usertransactions',auth,async(req,res)=>{
 try {
   const user = await db.users.findOne({where:{email:req.body.email}})
