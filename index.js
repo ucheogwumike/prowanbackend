@@ -73,6 +73,7 @@ try {
 
   res.status(200).send({message:"transaction updated",transaction:transaction})
 } catch (error) {
+       res.status(419).send({error:'bad request'})
   
 }
 
@@ -95,7 +96,8 @@ try {
           res.status(200).send({message:"profile picture changed"})
         
     } catch (error) {
-        
+         res.status(419).send({error:'bad request'})
+ 
     }
    
  })
