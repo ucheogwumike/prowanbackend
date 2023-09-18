@@ -23,7 +23,7 @@ app.use(express.json());
 
 try {
 
-  await db.users.create({
+ const user =  await db.users.create({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     middleName: req.body.middleName,
@@ -45,11 +45,13 @@ try {
 
 })
 
+
+
 const token = jwt.sign(
     {email:req.body.email},process.env.SECRETE,{expiresIn:86400}
     
 )
-res.status(200).send({auth: true,token: token})
+res.status(200).send({auth: true,token: token,user})
   
 } catch (error) {
 	console.log(error);
