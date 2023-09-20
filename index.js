@@ -72,6 +72,19 @@
     console.log(error)
   }
   
+
+  app.get('/usertotal',auth,async (req,res)=>{
+    try {
+      console.log(req.params)
+      const user = await db.users.findAll()
+      res.send(user.length);
+    } catch (error) {
+      console.log(error)
+    }
+    
+  })
+
+
 })
  app.post('/usertransactions',auth,async(req,res)=>{
 try {
