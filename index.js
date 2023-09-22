@@ -118,7 +118,7 @@ try {
     //req.file.filename = `john.png`
     // console.log( `${process.env.BASE_URL}/${req.file.filename}`)
     try {
-        await db.users.update({ profilePicture: `${process.env.BASE_URL}/${req.filename}` }, {
+        await db.users.update({ profilePicture: `${process.env.BASE_URL}/${req.file.filename}` }, {
             where: {
               email: req.body.email,
             },
