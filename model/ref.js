@@ -1,13 +1,13 @@
 module.exports = (sequelize,Sequelize)=>{
     const ref = sequelize.define("ref",{
-        message:{
-            type: Sequelize.UUID,
+        amount:{
+            type: Sequelize.DECIMAL,
             allowNull: false,
-            unique: true,
-            primaryKey: true
+           // unique: true,
+           // primaryKey: true
         },
         reference:{
-            type: Sequelize.DECIMAL,
+            type: Sequelize.STRING,
             allowNull: false
         },
         

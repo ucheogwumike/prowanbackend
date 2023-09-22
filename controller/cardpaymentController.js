@@ -50,7 +50,7 @@ const obj2 = {
     pin:req.body.pin,
     reference:w,
 }
- await db.refs.create({reference:w,message:req.body.amount})
+// await db.refs.create({reference:w,amount:req.body.amount})
 const card = await interswitch.cardpay(obj2)
 console.log(card)
 
@@ -84,7 +84,7 @@ res.json(card.data)
         
     } catch (error) {
         console.log(error)
-        res.send(error)
+        res.status(400).send(error)
     
         
     }

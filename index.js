@@ -99,6 +99,7 @@ app.get('/usertotal',async (req,res)=>{
  app.post('/usertransactions',auth,async(req,res)=>{
 try {
   const user = await db.users.findOne({where:{email:req.body.email}})
+	console.log(req.body.title)
  const transaction = await db.transactions.create({reference:req.body.reference,
                                   title:req.body.title,
                                 amount:req.body.amount,
