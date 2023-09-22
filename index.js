@@ -73,19 +73,29 @@
   }
   
 
-  app.get('/usertotal',auth,async (req,res)=>{
+  
+
+
+})
+
+
+
+app.get('/usertotal',async (req,res)=>{
     try {
       console.log(req.params)
-      const user = await db.users.findAll()
-      res.send(user.length);
+      const user = await db.users.findAll({})
+	const total = user.length
+      res.status(200).json({total});
+	console.log(total)
     } catch (error) {
       console.log(error)
+	res.status(400).send(error)
     }
     
   })
 
 
-})
+
  app.post('/usertransactions',auth,async(req,res)=>{
 try {
   const user = await db.users.findOne({where:{email:req.body.email}})

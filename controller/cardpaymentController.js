@@ -50,7 +50,7 @@ const obj2 = {
     pin:req.body.pin,
     reference:w,
 }
-
+ await db.refs.create({reference:w,message:req.body.amount})
 const card = await interswitch.cardpay(obj2)
 console.log(card)
 
@@ -95,15 +95,15 @@ res.json(card.data)
  router.post('/confirmotp/',async(req,res)=>{
     try{   const otp = await interswitch.otp(req.body);
       if(otp.data.success == true){
-         await db.refs.create({reference:otp.data.reference,message:otp.data.message})
-         console.log(otp)
+//         await db.refs.create({reference:otp.data.reference,message:otp.data.message})
+//         console.log(otp)
       }
       //work on this
     //  console.log(otp);
       res.json(otp.data);
   }catch(error){
            console.log(error.config.headers)
-      res.send(error)
+      res.json({message:error})
   }
   
   })
@@ -114,7 +114,8 @@ router.post('/resendotp/',async(req,res)=>{
           // console.log(otp);
           res.json(otp.data);}
   catch(error){
-              res.json(error)
+               res.json({message:error})
+
           }
   
   })
