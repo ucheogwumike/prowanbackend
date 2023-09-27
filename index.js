@@ -10,6 +10,9 @@
  const dotenv = require('dotenv');
  const cors = require('cors')
  
+
+ 
+ 
  
  
 
@@ -17,9 +20,6 @@
 
 
  dotenv.config();
-
-
-
 
  const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -100,9 +100,10 @@ app.get('/usertotal',async (req,res)=>{
 try {
   const user = await db.users.findOne({where:{email:req.body.email}})
 	console.log(req.body.title)
- const transaction = await db.transactions.create({reference:req.body.reference,
+ const transaction = await db.transactionStatus.create({reference:req.body.reference,
                                   title:req.body.title,
                                 amount:req.body.amount,
+                                status:"success",
                                 userId:user.id});
 
   res.status(200).send({message:"transaction updated",transaction:transaction})
@@ -112,6 +113,24 @@ try {
 }
 
  })
+
+ app.post('/transferusertransactions',auth,async(req,res)=>{
+  try {
+    const user = await db.users.findOne({where:{email:req.body.email}})
+    console.log(req.body.title)
+   const transaction = await db.transactionStatus.create({reference:req.body.reference,
+                                    title:req.body.title,
+                                  amount:req.body.amount,
+                                  status:"pending",
+                                  userId:user.id});
+  
+    res.status(200).send({message:"transaction updated",transaction:transaction})
+  } catch (error) {
+         res.status(419).send({error:'bad request'})
+    
+  }
+  
+   })
 
  app.post('/profile',auth,upload.single('picture'),async (req,res,next)=>{
     //await db.users.create(req.body);
@@ -141,4 +160,4 @@ try {
 
  db.sequelize.sync();
 
-// console.log(db);
+

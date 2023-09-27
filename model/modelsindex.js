@@ -24,6 +24,7 @@ db.sequelize = sequelize;
 db.users = require("./users")(sequelize,Sequelize);
 db.transactions = require("./transaction")(sequelize,Sequelize);
 db.refs = require("./ref")(sequelize,Sequelize);
+db.transactionStatus = require("./transactionstatus")(sequelize,Sequelize);
 
 db.users.hasMany(db.transactions,{as:"transaction"});
 db.transactions.belongsTo(db.users,{
@@ -31,4 +32,10 @@ db.transactions.belongsTo(db.users,{
     as:"user"
 })
 
+
+db.users.hasMany(db.transactions,{as:"transactionstatus"});
+db.transactionStatus.belongsTo(db.users,{
+    foreignKey:"userId",
+    as:"user"
+})
 module.exports = db;
