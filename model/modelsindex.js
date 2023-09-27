@@ -33,7 +33,7 @@ db.transactions.belongsTo(db.users,{
 })
 
 
-db.users.hasMany(db.transactions,{as:"transactionstatus"});
+db.users.hasMany(db.transactionStatus,{as:"transactionstatus"});
 db.transactionStatus.belongsTo(db.users,{
     foreignKey:"userId",
     as:"user"
