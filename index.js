@@ -96,25 +96,31 @@ app.get('/usertotal',async (req,res)=>{
 
 
 
- app.post('/usertransactions',auth,async(req,res)=>{
-try {
-  const user = await db.users.findOne({where:{email:req.body.email}})
-	console.log(req.body.title)
- const transaction = await db.transactionStatus.create({reference:req.body.reference,
-                                  title:req.body.title,
-                                amount:req.body.amount,
-                                status:"success",
-                                userId:user.id});
+ app.post('/transferusertransactions',auth,async(req,res)=>{
 
-  res.status(200).send({message:"transaction updated",transaction:transaction})
-} catch (error) {
-       res.status(419).send({error:'bad request'})
+  try {
+    const uniqueId = (length=16) =>{
+      return parseInt(Math.ceil(Math.random() * Date.now()).toPrecision(length).toString().replace(".", ""))
+  }
+  const w = "PROWAN"+ uniqueId().toString()
+
+    const user = await db.users.findOne({where:{email:req.body.email}})
+    console.log(req.body.title)
+   const transaction = await db.transactionStatus.create({reference:w,
+                                    title:req.body.title,
+                                  amount:req.body.amount,
+                                  status:"pending",
+                                  userId:user.id});
   
-}
+    res.status(200).send({message:"transaction updated",transaction:transaction})
+  } catch (error) {
+         res.status(419).send({error:'bad request'})
+    
+  }
 
  })
 
- app.post('/transferusertransactions',auth,async(req,res)=>{
+ app.post('/usertransactions',auth,async(req,res)=>{
   try {
     const user = await db.users.findOne({where:{email:req.body.email}})
     console.log(req.body.title)
@@ -131,6 +137,35 @@ try {
   }
   
    })
+
+
+   app.patch('/updateusertransactions',auth,async(req,res)=>{
+    try {
+      const transaction  = await db.transactionStatus.findOne({where:{reference:req.body.reference}})
+      console.log(req.body.title)
+     const transactionStatus =  await db.transactionStatus.update({ stats:"success" }, {
+      where: {
+        reference: transaction.reference
+      },
+    });
+      res.status(200).send({message:"transaction updated",transaction:transactionStatus})
+    } catch (error) {
+           res.status(419).send({error:'bad request'})
+      
+    }
+    
+     })  
+
+app.get('/alltransactions',async(req,res)=>{
+  try {
+    const transactions = await db.transactionStatus.findAll({})
+	//const total = user.length
+      res.status(200).json({transactions});
+  } catch (error) {
+    res.status(419).send({error:'bad request'})
+  }
+  
+})
 
  app.post('/profile',auth,upload.single('picture'),async (req,res,next)=>{
     //await db.users.create(req.body);
