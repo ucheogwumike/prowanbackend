@@ -167,6 +167,17 @@ app.get('/alltransactions',async(req,res)=>{
   
 })
 
+app.get('/getatransaction:reference',async(req,res)=>{
+  try {
+    const transaction = await db.transactionStatus.findOne({where:{reference:req.params.reference}})
+	//const total = user.length
+      res.status(200).json({transaction});
+  } catch (error) {
+    res.status(419).send({error:'bad request'})
+  }
+  
+})
+
  app.post('/profile',auth,upload.single('picture'),async (req,res,next)=>{
     //await db.users.create(req.body);
     //req.file.filename = `john.png`
