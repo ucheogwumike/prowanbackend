@@ -6,6 +6,7 @@ const db = require('../model/modelsindex');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
+const mn = require('../final.json')
 dotenv.config();
 
 
@@ -22,6 +23,16 @@ app.use(express.json());
 
 
 try {
+
+  const y = mn.filter((x)=>{
+    if(x['M/N'] == req.body.membershipNumber.toString())  
+       return x
+   })
+if (y.length <= 0){
+res.status(400).json({message:"please enter your prowan or anan number"})
+return false
+}
+
 
  const user =  await db.users.create({
     firstName: req.body.firstName,
@@ -45,7 +56,7 @@ try {
 
 })
 
-
+//try id and email
 
 const token = jwt.sign(
     {email:req.body.email},process.env.SECRETE,{expiresIn:86400}
