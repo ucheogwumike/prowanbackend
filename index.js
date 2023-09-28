@@ -167,6 +167,18 @@ app.get('/alltransactions',async(req,res)=>{
   
 })
 
+app.get('/allusertransactions:email',async(req,res)=>{
+  try {
+    const user = await db.users.findOne({where:{email:req.params.email}})
+    const transactions = await db.transactionStatus.findAll({where:{userId:user.id}})
+	//const total = user.length
+      res.status(200).json({transactions});
+  } catch (error) {
+    res.status(419).send({error:'bad request'})
+  }
+  
+})
+
 app.get('/getatransaction:reference',async(req,res)=>{
   try {
     const transaction = await db.transactionStatus.findOne({where:{reference:req.params.reference}})
