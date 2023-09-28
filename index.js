@@ -156,7 +156,7 @@ app.get('/usertotal',async (req,res)=>{
     
      })  
 
-app.get('/alltransactions',async(req,res)=>{
+app.get('/alltransactions',auth,async(req,res)=>{
   try {
     const transactions = await db.transactionStatus.findAll({})
 	//const total = user.length
@@ -167,7 +167,7 @@ app.get('/alltransactions',async(req,res)=>{
   
 })
 
-app.get('/allusertransactions:email',async(req,res)=>{
+app.get('/allusertransactions:email',auth,async(req,res)=>{
   try {
     const user = await db.users.findOne({where:{email:req.params.email}})
     const transactions = await db.transactionStatus.findAll({where:{userId:user.id}})
@@ -179,7 +179,7 @@ app.get('/allusertransactions:email',async(req,res)=>{
   
 })
 
-app.get('/getatransaction:reference',async(req,res)=>{
+app.get('/getatransaction:reference',auth,async(req,res)=>{
   try {
     const transaction = await db.transactionStatus.findOne({where:{reference:req.params.reference}})
 	//const total = user.length
