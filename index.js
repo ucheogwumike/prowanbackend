@@ -109,7 +109,7 @@ app.get('/usertotal',async (req,res)=>{
    const transaction = await db.transactionStatus.create({reference:w,
                                     title:req.body.title,
                                   amount:req.body.amount,
-                                  status:"pending",
+                                  stus:"pending",
                                   userId:user.id});
   
     res.status(200).send({message:"transaction updated",transaction:transaction})
@@ -127,7 +127,7 @@ app.get('/usertotal',async (req,res)=>{
    const transaction = await db.transactionStatus.create({reference:req.body.reference,
                                     title:req.body.title,
                                   amount:req.body.amount,
-                                  status:"pending",
+                                  stus:"pending",
                                   userId:user.id});
   
     res.status(200).send({message:"transaction updated",transaction:transaction})
@@ -143,7 +143,7 @@ app.get('/usertotal',async (req,res)=>{
     try {
       const transaction  = await db.transactionStatus.findOne({where:{reference:req.body.reference}})
       console.log(req.body.title)
-     const transactionStatus =  await db.transactionStatus.update({ stats:"success" }, {
+     const transactionStatus =  await db.transactionStatus.update({ stus:"success" }, {
       where: {
         reference: transaction.reference
       },
