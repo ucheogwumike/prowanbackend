@@ -207,6 +207,8 @@ app.get('/getatransaction:reference',auth,async(req,res)=>{
             },
           });
 
+          console.log(user)
+
 //          await db.users.save();
 //          console.log(req.file.filename)
 
