@@ -201,7 +201,7 @@ app.get('/getatransaction:reference',auth,async(req,res)=>{
     //req.file.filename = `john.png`
     // console.log( `${process.env.BASE_URL}/${req.file.filename}`)
     try {
-        await db.users.update({ profilePicture: `${process.env.BASE_URL}/${req.file.filename}` }, {
+      const user =  await db.users.update({ profilePicture: `${process.env.BASE_URL}/${req.file.filename}` }, {
             where: {
               email: req.body.email,
             },
@@ -210,7 +210,7 @@ app.get('/getatransaction:reference',auth,async(req,res)=>{
 //          await db.users.save();
 //          console.log(req.file.filename)
 
-          res.status(200).send({message:"profile picture changed"})
+          res.status(200).send({message:"profile picture changed",user})
         
     } catch (error) {
          res.status(419).send({error:'bad request'})
