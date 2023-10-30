@@ -64,9 +64,13 @@
  })
 
  app.get('/userslist',async (req,res)=>{
-  // await db.users.create(req.body);
-  const user = await db.users.findAll({})
-  res.send(users)
+  try{
+    const user = await db.users.findAll({})
+    res.send(user)
+  }catch(error){
+    res.send(error)
+  }
+ 
 })
 
  app.get('/users/:email',auth,async (req,res)=>{
