@@ -24,14 +24,14 @@ app.use(express.json());
 
 try {
 
-  const y = mn.filter((x)=>{
-    if(x['M/N'] == req.body.membershipNumber.toString())  
-       return x
-   })
-if (y.length <= 0){
-res.status(400).json({message:"please enter your prowan or anan number"})
-return false
-}
+//   const y = mn.filter((x)=>{
+//     if(x['M/N'] == req.body.membershipNumber.toString())  
+//        return x
+//    })
+// if (y.length <= 0){
+// res.status(400).json({message:"please enter your prowan or anan number"})
+// return false
+// }
 
 
  const user =  await db.users.create({

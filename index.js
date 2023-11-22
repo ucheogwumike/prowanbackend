@@ -120,7 +120,8 @@ app.get('/usertotal',async (req,res)=>{
                                     title:req.body.title,
                                   amount:req.body.amount,
                                   stus:"pending",
-                                  userId:user.id});
+                             //     userId:user.id
+                                });
   
     res.status(200).send({message:"transaction updated",transaction:transaction})
   } catch (error) {
@@ -138,7 +139,8 @@ app.get('/usertotal',async (req,res)=>{
                                     title:req.body.title,
                                   amount:req.body.amount,
                                   stus:"pending",
-                                  userId:user.id});
+                            //      userId:user.id
+                                });
   
     res.status(200).send({message:"transaction updated",transaction:transaction})
   } catch (error) {
