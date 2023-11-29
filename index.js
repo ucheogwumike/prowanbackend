@@ -9,6 +9,8 @@
  const auth = require('./middleware/auth')
  const dotenv = require('dotenv');
  const cors = require('cors')
+ const email = require('./email/nodemailer');
+ 
  
 
  
@@ -57,6 +59,26 @@
 
  app.use('/api/auth', AuthController);
  app.use('/payment',cardController);
+
+
+//  
+
+
+ app.post('/sendmail',async(req,res)=>{
+    
+  const info = email.transporter.sendMail({
+    from: 'info@prowan.ng', // sender address
+    to: 'ucheogwumike@gmail.com', // list of receivers
+    subject: "Prowan web registration", // Subject line
+    html: `<p>Hello   your prowan web registration was successful.</p>
+            <p><b>CONGRATULATIONS!!!</b></p>`, // plain text body
+    //html: "<b>Hello world?</b>", // html body
+    })
+
+    console.log( await info)
+    console.log(process.env.EMAIL_PASSWORD)
+    res.send('mail sent')
+ })
 
  app.get('/',async (req,res)=>{
     // await db.users.create(req.body);

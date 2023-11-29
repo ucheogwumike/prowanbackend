@@ -23,8 +23,9 @@ db.sequelize = sequelize;
 
 db.users = require("./users")(sequelize,Sequelize);
 db.transactions = require("./transaction")(sequelize,Sequelize);
-db.refs = require("./ref")(sequelize,Sequelize);
+//db.refs = require("./ref")(sequelize,Sequelize);
 db.transactionStatus = require("./transactionstatus")(sequelize,Sequelize);
+db.token = require('./token')(sequelize,Sequelize);
 
 db.users.hasMany(db.transactions,{as:"transaction"});
 db.transactions.belongsTo(db.users,{

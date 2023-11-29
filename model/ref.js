@@ -3,8 +3,7 @@ module.exports = (sequelize,Sequelize)=>{
         amount:{
             type: Sequelize.DECIMAL,
             allowNull: false,
-           // unique: true,
-           // primaryKey: true
+          
         },
         reference:{
             type: Sequelize.STRING,

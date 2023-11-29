@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const app = express();
 const db = require('../model/modelsindex');
-
+const email = require('../email/nodemailer');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 const mn = require('../final.json')
+const crypto = require('crypto');
 dotenv.config();
 
 
@@ -62,7 +63,17 @@ const token = jwt.sign(
     {email:req.body.email},process.env.SECRETE,{expiresIn:86400}
     
 )
-res.status(200).send({auth: true,token: token,user})
+
+const info = email.transporter.sendMail({
+from: 'info@prowan.ng', // sender address
+to: req.body.email, // list of receivers
+subject: "Prowan web registration", // Subject line
+html: `<p>Hello ${req.body.firstName} ${req.body.lastName} your prowan web registration was successful.</p>
+        <p><b>CONGRATULATIONS!!!</b></p>`, // plain text body
+//html: "<b>Hello world?</b>", // html body
+})
+
+res.status(200).send({auth: true,token: token,user,email:await info.response,email:await info.envelope})
   
 } catch (error) {
 	console.log(error);
@@ -90,4 +101,62 @@ res.status(200).send({auth: true,token: token,user})
       res.status(200).send({ auth: true, token: token,user });
     });
     
+    router.post('/password-verification',async function(req,res){
+      
+      const user = await db.users.findOne({ where: { email: req.body.email } })
+
+    
+      if (!user) return res.status(404).send('No user found.');
+      
+      let token = await db.token.findOne({where:{user:user.id}})
+      
+      if(!token){
+        token = await db.token.create(
+          {user: user.id,
+                token: crypto.randomBytes(32).toString("hex"),
+          })
+      }
+
+      const link = `${process.env.BASE_URL_FRONT}/passwordreset?id=${user.id}&token=${token.token}`;
+      const info = email.transporter.sendMail({
+        from: 'info@prowan.ng', // sender address
+        to: req.body.email, // list of receivers
+        subject: "Prowan reset password", // Subject line
+        html: `<p>Hello click the link below to change your password</p>
+                <p>${link}</p>`, // plain text body
+        //html: "<b>Hello world?</b>", // html body
+        })
+        
+        res.status(200).send({email:await info.response})
+
+     // res.send("password reset link sent to your email account");
+
+    })
+
+    router.post('/changepassword/:userid/:token', async (req,res)=>{
+      const user = await db.users.findOne({ where: { id: req.params.userid }})
+      if (!user) return res.status(400).send("invalid link or expired");
+
+
+      const token = await db.token.findOne(
+        {where:{user:user.id,token:req.params.token}})
+        if (!token) return res.status(400).send("Invalid link or expired");
+
+        const hashedPassword = bcrypt.hashSync(req.body.password,10);
+
+        await db.users.update({ password: hashedPassword }, {
+          where: {
+            id: req.params.userid
+          }
+        });
+
+        await db.token.destroy({
+          where: {
+            token: req.params.token
+          }
+        });
+
+        res.send("password reset sucessfully.");
+
+    })
   module.exports = router;
