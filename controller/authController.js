@@ -85,8 +85,9 @@ res.status(200).send({auth: true,token: token,user,email:await info.response,ema
  })
 
  router.post('/login', async function(req, res) {
+    try {
 
-    const user = await db.users.findOne({ where: { email: req.body.email } })
+      const user = await db.users.findOne({ where: { email: req.body.email } })
 
     
       if (!user) return res.status(404).send('No user found.');
@@ -99,11 +100,20 @@ res.status(200).send({auth: true,token: token,user,email:await info.response,ema
       })
       
       res.status(200).send({ auth: true, token: token,user });
+      
+    } catch (error) {
+      console.log(error);
+  res.status(419).send({error:'bad request'})
+    }
+
+    
     });
     
     router.post('/password-verification',async function(req,res){
-      
-      const user = await db.users.findOne({ where: { email: req.body.email } })
+
+      try {
+
+        const user = await db.users.findOne({ where: { email: req.body.email } })
 
     
       if (!user) return res.status(404).send('No user found.');
@@ -127,36 +137,52 @@ res.status(200).send({auth: true,token: token,user,email:await info.response,ema
         //html: "<b>Hello world?</b>", // html body
         })
         
-        res.status(200).send({email:await info.response})
+        res.status(200).send("a password reset link has been sent to your email")
+        
+      } catch (error) {
+        console.log(error);
+  res.status(419).send({error:'bad request'})
+        
+      }
+      
+      
 
      // res.send("password reset link sent to your email account");
 
     })
 
     router.post('/changepassword/:userid/:token', async (req,res)=>{
-      const user = await db.users.findOne({ where: { id: req.params.userid }})
-      if (!user) return res.status(400).send("invalid link or expired");
 
-
-      const token = await db.token.findOne(
-        {where:{user:user.id,token:req.params.token}})
-        if (!token) return res.status(400).send("Invalid link or expired");
-
-        const hashedPassword = bcrypt.hashSync(req.body.password,10);
-
-        await db.users.update({ password: hashedPassword }, {
-          where: {
-            id: req.params.userid
-          }
-        });
-
-        await db.token.destroy({
-          where: {
-            token: req.params.token
-          }
-        });
-
-        res.send("password reset sucessfully.");
+      try {
+        const user = await db.users.findOne({ where: { id: req.params.userid }})
+        if (!user) return res.status(400).send("invalid link or expired");
+  
+  
+        const token = await db.token.findOne(
+          {where:{user:user.id,token:req.params.token}})
+          if (!token) return res.status(400).send("Invalid link or expired");
+  
+          const hashedPassword = bcrypt.hashSync(req.body.password,10);
+  
+          await db.users.update({ password: hashedPassword }, {
+            where: {
+              id: req.params.userid
+            }
+          });
+  
+          await db.token.destroy({
+            where: {
+              token: req.params.token
+            }
+          });
+  
+          res.send("password reset sucessfully.");
+        
+      } catch (error) {
+        console.log(error);
+  res.status(419).send({error:'bad request'})
+      }
+   
 
     })
   module.exports = router;
