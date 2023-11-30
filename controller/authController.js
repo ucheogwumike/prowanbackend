@@ -117,16 +117,26 @@ res.status(200).send({auth: true,token: token,user,email:await info.response,ema
 
     
       if (!user) return res.status(404).send('No user found.');
-      
+      const w = crypto.randomBytes(32).toString("hex")
       let token = await db.token.findOne({where:{user:user.id}})
-      
+      // console.log(token)
       if(!token){
         token = await db.token.create(
           {user: user.id,
                 token: crypto.randomBytes(32).toString("hex"),
           })
+       } 
+       else{
+        
+       await db.token.update({ token: w}, {
+          where: {
+            user: user.id
+          }
+        });
+        
       }
-
+      token = await db.token.findOne({where:{user:user.id}})
+      
       const link = `${process.env.BASE_URL_FRONT}/passwordreset?id=${user.id}&token=${token.token}`;
       const info = email.transporter.sendMail({
         from: 'info@prowan.ng', // sender address
@@ -160,6 +170,10 @@ res.status(200).send({auth: true,token: token,user,email:await info.response,ema
   
         const token = await db.token.findOne(
           {where:{user:user.id,token:req.params.token}})
+          //console.log(token)
+
+         
+
           if (!token) return res.status(400).send("Invalid link or expired");
   
           const hashedPassword = bcrypt.hashSync(req.body.password,10);
@@ -170,11 +184,12 @@ res.status(200).send({auth: true,token: token,user,email:await info.response,ema
             }
           });
   
-          await db.token.destroy({
-            where: {
-              token: req.params.token
-            }
-          });
+          
+          // await db.token.destroy({
+          //   where: {
+          //     token: req.params.token
+          //   }
+          // });
   
           res.send("password reset sucessfully.");
         
